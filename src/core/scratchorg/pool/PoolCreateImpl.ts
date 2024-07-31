@@ -68,36 +68,37 @@ export default class PoolCreateImpl extends PoolBaseImpl {
 
         //Compute allocation
         try {
-            if (!this.pool.snapshotPool) {
-                SFPLogger.log(COLOR_KEY_MESSAGE('Computing Allocation..'), LoggerLevel.INFO);
-                try {
-                    this.totalToBeAllocated = await this.computeAllocation();
-                } catch (error) {
+
+            SFPLogger.log(COLOR_KEY_MESSAGE('Computing Allocation..'), LoggerLevel.INFO);
+            try {
+                this.totalToBeAllocated = await this.computeAllocation();
+            } catch (error) {
+                return err({
+                    success: 0,
+                    failed: 0,
+                    message: `Unable to access fields on ScratchOrgInfo, Please check the profile being used`,
+                    errorCode: PoolErrorCodes.PrerequisiteMissing,
+                });
+            }
+
+            if (this.totalToBeAllocated === 0) {
+                if (this.limits.ActiveScratchOrgs.Remaining > 0) {
                     return err({
                         success: 0,
                         failed: 0,
-                        message: `Unable to access fields on ScratchOrgInfo, Please check the profile being used`,
-                        errorCode: PoolErrorCodes.PrerequisiteMissing,
+                        message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
+                        errorCode: PoolErrorCodes.Max_Capacity,
+                    });
+                } else {
+                    return err({
+                        success: 0,
+                        failed: 0,
+                        message: `There is no capacity to create a pool at this time, Please try again later`,
+                        errorCode: PoolErrorCodes.No_Capacity,
                     });
                 }
-
-                if (this.totalToBeAllocated === 0) {
-                    if (this.limits.ActiveScratchOrgs.Remaining > 0) {
-                        return err({
-                            success: 0,
-                            failed: 0,
-                            message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
-                            errorCode: PoolErrorCodes.Max_Capacity,
-                        });
-                    } else {
-                        return err({
-                            success: 0,
-                            failed: 0,
-                            message: `There is no capacity to create a pool at this time, Please try again later`,
-                            errorCode: PoolErrorCodes.No_Capacity,
-                        });
-                    }
-                }
+            }
+            if (!this.pool.snapshotPool) {
 
                 //Generate Scratch Orgs
                 this.pool.scratchOrgs = await this.generateScratchOrgs(
@@ -329,7 +330,7 @@ export default class PoolCreateImpl extends PoolBaseImpl {
             undefined,
             undefined,
             true,
-            this.pool.maxAllocation
+            this.pool.to_allocate
         ).execute()) as ScratchOrg[];
         scratchOrgs = await scratchOrgInfoFetcher.getScratchOrgRecordId(scratchOrgs);
 
