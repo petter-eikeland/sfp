@@ -89,7 +89,7 @@ export default class PoolCreateImpl extends PoolBaseImpl {
                         message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
                         errorCode: PoolErrorCodes.Max_Capacity,
                     });
-                } else {
+                } else if (!this.pool.snapshotPool){
                     return err({
                         success: 0,
                         failed: 0,
@@ -321,6 +321,11 @@ export default class PoolCreateImpl extends PoolBaseImpl {
             LoggerLevel.INFO
         );
 
+        SFPLogger.log(
+            COLOR_KEY_MESSAGE(`Test New Log`),
+            LoggerLevel.INFO
+        );
+
         let scratchOrgs = (await new PoolFetchImpl(
             this.hubOrg,
             this.pool.snapshotPool,
@@ -329,7 +334,7 @@ export default class PoolCreateImpl extends PoolBaseImpl {
             undefined,
             undefined,
             undefined,
-            true,
+            false,
             this.pool.to_allocate
         ).execute()) as ScratchOrg[];
         scratchOrgs = await scratchOrgInfoFetcher.getScratchOrgRecordId(scratchOrgs);
