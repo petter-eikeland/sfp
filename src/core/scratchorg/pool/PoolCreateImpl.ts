@@ -81,14 +81,14 @@ export default class PoolCreateImpl extends PoolBaseImpl {
             }
 
             if (this.totalToBeAllocated === 0) {
-                if (this.limits.ActiveScratchOrgs.Remaining > 0) {
+                if (this.limits.ActiveScratchOrgs.Remaining > 0 || this.pool.snapshotPool) {
                     return err({
                         success: 0,
                         failed: 0,
                         message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
                         errorCode: PoolErrorCodes.Max_Capacity,
                     });
-                } else if (!this.pool.snapshotPool) {
+                } else {
                     return err({
                         success: 0,
                         failed: 0,
@@ -163,7 +163,9 @@ export default class PoolCreateImpl extends PoolBaseImpl {
         pool.to_satisfy_max =
             pool.maxAllocation - pool.current_allocation > 0 ? pool.maxAllocation - pool.current_allocation : 0;
 
-        if (pool.to_satisfy_max > 0 && pool.to_satisfy_max <= remainingScratchOrgs) {
+        if (pool.snapshotPool && pool.to_satisfy_max > 0){
+            pool.to_allocate = pool.to_satisfy_max;
+        } else if(pool.to_satisfy_max > 0 && pool.to_satisfy_max <= remainingScratchOrgs){
             pool.to_allocate = pool.to_satisfy_max;
         } else if (pool.to_satisfy_max > 0 && pool.to_satisfy_max > remainingScratchOrgs) {
             pool.to_allocate = remainingScratchOrgs;
