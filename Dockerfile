@@ -1,4 +1,4 @@
-ARG SFP_URL=https://github.com/petter-eikeland/sfp.git
+ARG SFP_URL=https://github.com/flxbl-io/sfp.git
 ARG SFP_COMMIT_ID=HEAD
 
 
@@ -9,7 +9,7 @@ ARG SFP_COMMIT_ID
 WORKDIR /app
 # Install necessary packages
 RUN apt-get update && \
-    apt-get install -y git
+    apt-get install -y git 
 
 # Clone the repository
 RUN git clone ${SFP_URL} . && \
@@ -89,7 +89,7 @@ RUN mkdir -p /etc/apt/keyrings \
     && apt-get -y install --no-install-recommends nodejs \
     && apt-get autoremove --assume-yes \
     && apt-get clean --assume-yes \
-    && rm -rf /var/lib/apt/list/*
+    && rm -rf /var/lib/apt/list/* 
 
 # install yarn
 RUN npm install --global yarn --omit-dev \
@@ -98,7 +98,7 @@ RUN npm install --global yarn --omit-dev \
 # Install SF cli and sfp
 RUN npm install --global --omit=dev \
     @salesforce/cli@${SF_CLI_VERSION} \
-    && npm cache clean --force
+    && npm cache clean --force   
 
 
 # Copy the built sfp cli  from the previous stage
@@ -140,7 +140,7 @@ RUN echo 'y' | sf plugins:install sfdx-browserforce-plugin@${BROWSERFORCE_VERSIO
     && echo 'y' | sf plugins:install sfdmu@${SFDMU_VERSION} \
     && echo 'y' | sf plugins:install @salesforce/plugin-signups@1.5.0 \
     && echo 'y' | sf plugins:install @salesforce/sfdx-scanner@3.16.0 \
-    && yarn cache clean --all
+    && yarn cache clean --all 
 
 # Set some sane behaviour in container
 ENV SF_CONTAINER_MODE=true
