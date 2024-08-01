@@ -68,7 +68,6 @@ export default class PoolCreateImpl extends PoolBaseImpl {
 
         //Compute allocation
         try {
-
             SFPLogger.log(COLOR_KEY_MESSAGE('Computing Allocation..'), LoggerLevel.INFO);
             try {
                 this.totalToBeAllocated = await this.computeAllocation();
@@ -89,7 +88,7 @@ export default class PoolCreateImpl extends PoolBaseImpl {
                         message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
                         errorCode: PoolErrorCodes.Max_Capacity,
                     });
-                } else if (!this.pool.snapshotPool){
+                } else if (!this.pool.snapshotPool) {
                     return err({
                         success: 0,
                         failed: 0,
@@ -99,7 +98,6 @@ export default class PoolCreateImpl extends PoolBaseImpl {
                 }
             }
             if (!this.pool.snapshotPool) {
-
                 //Generate Scratch Orgs
                 this.pool.scratchOrgs = await this.generateScratchOrgs(
                     this.pool,
@@ -318,11 +316,6 @@ export default class PoolCreateImpl extends PoolBaseImpl {
         //Generate Scratch Orgs
         SFPLogger.log(
             COLOR_KEY_MESSAGE(`Fetching Scratch Orgs from snapshot pool ${this.pool.snapshotPool}`),
-            LoggerLevel.INFO
-        );
-
-        SFPLogger.log(
-            COLOR_KEY_MESSAGE(`Test New Log`),
             LoggerLevel.INFO
         );
 
