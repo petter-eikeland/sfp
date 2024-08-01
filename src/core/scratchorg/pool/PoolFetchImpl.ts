@@ -63,6 +63,7 @@ export default class PoolFetchImpl extends PoolBaseImpl {
     }
 
     private async fetchAllScratchOrg(availableSo: any[],limitBy?:number): Promise<ScratchOrg[]> {
+        SFPLogger.log(`fetchAllScratchOrg executed, limited by ${limitBy}`, LoggerLevel.INFO);
         let fetchedSOs: ScratchOrg[] = [];
 
         if (availableSo.length > 0) {
@@ -79,8 +80,7 @@ export default class PoolFetchImpl extends PoolBaseImpl {
                         continue;
                     }
                 }
-                
-              
+
 
                 SFPLogger.log(
                     `Scratch org ${element.SignupUsername} is allocated from the pool. Expiry date is ${element.ExpirationDate}`,
@@ -101,8 +101,8 @@ export default class PoolFetchImpl extends PoolBaseImpl {
 
                 if(limitBy && count==limitBy)
                  break;
-                
-                 count++;  
+
+                 count++;
             }
         }
 
@@ -119,6 +119,7 @@ export default class PoolFetchImpl extends PoolBaseImpl {
     }
 
     private async fetchSingleScratchOrg(availableSo: any[]): Promise<ScratchOrg> {
+        SFPLogger.log(`fetchSingleScratchOrg executed`, LoggerLevel.INFO);
         let soDetail: ScratchOrg;
 
         if (availableSo.length > 0) {
@@ -213,7 +214,7 @@ export default class PoolFetchImpl extends PoolBaseImpl {
     private async loginToScratchOrgIfSfdxAuthURLExists(soDetail: ScratchOrg): Promise<boolean> {
         try {
             if (soDetail.sfdxAuthUrl && isValidSfdxAuthUrl(soDetail.sfdxAuthUrl)) {
-              
+
 
                 const oauth2Options = AuthInfo.parseSfdxAuthUrl(soDetail.sfdxAuthUrl);
                 const authInfo = await AuthInfo.create({ oauth2Options });
@@ -224,8 +225,8 @@ export default class PoolFetchImpl extends PoolBaseImpl {
                     setDefault: true,
                     setDefaultDevHub: false,
                   });
-              
-                  //https://github.com/salesforcecli/plugin-auth/blob/main/src/commands/org/login/sfdx-url.ts 
+
+                  //https://github.com/salesforcecli/plugin-auth/blob/main/src/commands/org/login/sfdx-url.ts
                   const result = { clientSecret: '', ...authInfo.getFields(true) };
                   await AuthInfo.identifyPossibleScratchOrgs(result, authInfo);
 
