@@ -88,7 +88,7 @@ export default class PoolCreateImpl extends PoolBaseImpl {
                         message: `The tag provided ${this.pool.tag} is currently at the maximum capacity , No scratch orgs will be allocated`,
                         errorCode: PoolErrorCodes.Max_Capacity,
                     });
-                } else {
+                } else if (!this.pool.snapshotPool) {
                     return err({
                         success: 0,
                         failed: 0,
