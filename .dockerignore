@@ -1,0 +1,14 @@
+.git
+.github
+node_modules
+lib
+dist
+coverage
+docs
+.storecode
+.vscode
+.idea
+*.tgz
+tsconfig.tsbuildinfo
+npm-debug.log*
+.DS_Store

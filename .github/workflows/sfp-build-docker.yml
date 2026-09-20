@@ -82,13 +82,12 @@ jobs:
       uses: docker/build-push-action@v5
       with:
           file: dockerfiles/${{inputs.dockerFileName}}.Dockerfile
-          context: dockerfiles
+          context: .
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
               ghcr.io/${{ inputs.repo }}/${{ inputs.image }}:${{ env.PKG_VERSION }}-${{ inputs.suffix-tag }}
-          build-args: | 
-                  SFP_VERSION=${{ env.PKG_VERSION }}
+          build-args: |
                   GIT_COMMIT=${{ github.sha}}
 
 

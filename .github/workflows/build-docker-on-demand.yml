@@ -47,4 +47,3 @@ jobs:
           build-args: |
             GIT_COMMIT=${{ github.event.inputs.commit_id }}
             SF_COMMIT_ID=${{ github.event.inputs.commit_id }}
-            SFP_VERSION=${{ steps.get_version.outputs.version }}
