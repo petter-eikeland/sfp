@@ -14,7 +14,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@apexdevtools/apex-parser": "^4.0.0",
+        "@apexdevtools/apex-parser": "^5.2.0",
         "@flxbl-io/apexlink": "4.0.1",
         "@flxbl-io/sfdx-process-wrapper": "3.0.0",
         "@flxbl-io/sfp-logger": "5.0.1",

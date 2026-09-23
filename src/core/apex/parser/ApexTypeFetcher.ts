@@ -1,19 +1,10 @@
 import * as fs from 'fs-extra';
 const path = require('path');
 const { globSync } = require('glob');
-import { CharStreams } from 'antlr4ts';
 
 import ApexTypeListener from './listeners/ApexTypeListener';
 
-import {
-    ApexLexer,
-    ApexParser,
-    ApexParserListener,
-    CaseInsensitiveInputStream,
-    ThrowingErrorListener,
-    CommonTokenStream,
-    ParseTreeWalker,
-} from '@apexdevtools/apex-parser';
+import { ApexParserFactory, ApexParseTreeWalker } from '@apexdevtools/apex-parser';
 import SFPLogger, { LoggerLevel } from '@flxbl-io/sfp-logger';
 import { ApexClasses } from '../../package/SfpPackage';
 
@@ -52,12 +43,7 @@ export default class ApexTypeFetcher {
             // Parse cls file
             let compilationUnitContext;
             try {
-                let lexer = new ApexLexer(new CaseInsensitiveInputStream(CharStreams.fromString(clsPayload)));
-                let tokens: CommonTokenStream = new CommonTokenStream(lexer);
-
-                let parser = new ApexParser(tokens);
-                parser.removeErrorListeners();
-                parser.addErrorListener(new ThrowingErrorListener());
+                let parser = ApexParserFactory.createParser(clsPayload, true);
 
                 compilationUnitContext = parser.compilationUnit();
             } catch (err) {
@@ -73,7 +59,7 @@ export default class ApexTypeFetcher {
             let apexTypeListener: ApexTypeListener = new ApexTypeListener();
 
             // Walk parse tree to determine Apex type
-            ParseTreeWalker.DEFAULT.walk(apexTypeListener as ApexParserListener, compilationUnitContext);
+            ApexParseTreeWalker.DEFAULT.walk(apexTypeListener, compilationUnitContext);
 
             let apexType = apexTypeListener.getApexType();
 
