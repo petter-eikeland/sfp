@@ -224,7 +224,8 @@ export default class PrepareImpl {
             for (const pkg of packages) {
                 try {
                     let latestGitTagVersion: GitTags = new GitTags(git, pkg.package);
-                    let version = await latestGitTagVersion.getVersionFromLatestTag();
+                    // Pools need publications from all merged history, not only first-parent commits.
+                    let version = await latestGitTagVersion.getVersionFromLatestTag(true);
                     artifactFetcher.fetchArtifact(pkg.package, 'artifacts', version, true);
                     this.artifactFetchedCount++;
                 } catch (error) {

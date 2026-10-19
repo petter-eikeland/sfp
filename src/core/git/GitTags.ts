@@ -6,11 +6,11 @@ export default class GitTags {
 
     /***
      * Returns list of sorted tags, belonging to package, that are reachable from HEAD and
-     * follow the first parent on merge commits.
+     * follow the first parent on merge commits unless merged history is requested.
      * If there are no tags, returns empty array
      * @param sfdx_package
      */
-    async listTagsOnBranch(): Promise<string[]> {
+    async listTagsOnBranch(includeMergedHistory = false): Promise<string[]> {
         let tags: string[] = await this.git.tag([
             `-l`,
             `${this.sfdx_package}_v*`,
@@ -18,13 +18,14 @@ export default class GitTags {
             `--merged`,
         ]);
 
-        if (tags.length > 0) return this.filterTagsAgainstBranch(tags);
+        if (tags.length > 0) return this.filterTagsAgainstBranch(tags, includeMergedHistory);
         else return tags;
     }
 
-    private async filterTagsAgainstBranch(tags: string[]): Promise<string[]> {
-        // Get full-length commit ID's on the current branch, following the first parent on merge commits
-        let commits: string[] = await this.git.log([`--pretty=format:%H`, `--first-parent`]);
+    private async filterTagsAgainstBranch(tags: string[], includeMergedHistory: boolean): Promise<string[]> {
+        const logOptions = [`--pretty=format:%H`];
+        if (!includeMergedHistory) logOptions.push(`--first-parent`);
+        let commits: string[] = await this.git.log(logOptions);
 
         // Get the tags' associated commit ID
         // Dereference (-d) tags into object IDs
@@ -56,10 +57,10 @@ export default class GitTags {
         return tagsPointingToBranch;
     }
 
-    public async getVersionFromLatestTag(): Promise<string> {
+    public async getVersionFromLatestTag(includeMergedHistory = false): Promise<string> {
         let version: string;
 
-        let tags = await this.listTagsOnBranch();
+        let tags = await this.listTagsOnBranch(includeMergedHistory);
         let latestTag = tags.pop();
         if (latestTag) {
             let match: RegExpMatchArray = latestTag.match(

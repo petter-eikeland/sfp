@@ -68,6 +68,14 @@ sfp is comprised of a suite of commands to aid in your end to end development cy
 sfp is constantly evolving and being driven by the passionate community that has embraced our ways of working.  We have introduced key utility commands over the years to solve pain points specific to the Salesforce Platform.  The commands have been successfully tested and used on large enterprise-scale implementations.  As we continue to grow the toolset, we hope to introduced more commands to address the future wave of challenges.
 
 
+### Pool publication history
+
+When fetching published artifacts, pool preparation considers publication tags reachable from the
+checked-out commit through any merge parent. This avoids pairing a newly published package with an
+older dependency merely because the dependency's publication is on a merge's second-parent history.
+Tags outside the checkout's ancestry remain excluded. Existing tag creation-date ordering and
+`-ALIGN` handling are preserved; other callers retain first-parent-only selection.
+
 #### Installing sfp locally
 
 sfp can be installed on your local device using npm
