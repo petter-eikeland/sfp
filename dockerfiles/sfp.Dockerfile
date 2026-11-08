@@ -12,7 +12,7 @@ FROM node:${NODE_MAJOR}-trixie-slim AS sfp-builder
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HUSKY=0
 
-# better-sqlite3 (via @flxbl-io/sfprofiles) ships no prebuilt binary for the
+# better-sqlite3 (via @petter-eikeland/sfprofiles) ships no prebuilt binary for the
 # node 24+ ABI, so npm ci falls back to node-gyp and needs a toolchain
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3 make g++ \
@@ -101,7 +101,7 @@ RUN npm install --global --omit-dev --allow-scripts=yarn yarn \
     && npm cache clean --force
 
 # Install SF cli and the locally built sfp
-# better-sqlite3 (via @flxbl-io/sfprofiles) must compile or sfp fails at runtime
+# better-sqlite3 (via @petter-eikeland/sfprofiles) must compile or sfp fails at runtime
 COPY --from=sfp-builder /dist/*.tgz /tmp/sfp.tgz
 RUN npm install --global --omit=dev \
     --allow-scripts=better-sqlite3,unix-dgram,protobufjs,@salesforce/cli \

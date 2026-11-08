@@ -1,8 +1,8 @@
 import { Messages, Org }  from '@salesforce/core';
 import * as fs from 'fs-extra';
 import { isNil } from 'lodash';
-import { Sfpowerkit } from '@flxbl-io/sfprofiles/lib/utils/sfpowerkit';
-import ProfileSync from '@flxbl-io/sfprofiles/lib/impl/source/profileSync';
+import { Sfpowerkit } from '@petter-eikeland/sfprofiles/lib/utils/sfpowerkit';
+import ProfileSync from '@petter-eikeland/sfprofiles/lib/impl/source/profileSync';
 import SfpCommand from '../../SfpCommand';
 import Table from 'cli-table';
 import { ZERO_BORDER_TABLE } from '../../ui/TableConstants';

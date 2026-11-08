@@ -1,11 +1,11 @@
 import { Messages, Org }  from '@salesforce/core';
 import * as _ from 'lodash';
-import { Sfpowerkit } from '@flxbl-io/sfprofiles/lib/utils/sfpowerkit';
+import { Sfpowerkit } from '@petter-eikeland/sfprofiles/lib/utils/sfpowerkit';
 import SFPLogger, { LoggerLevel } from '@flxbl-io/sfp-logger';
-import { METADATA_INFO } from '@flxbl-io/sfprofiles/lib/impl/metadata/metadataInfo';
+import { METADATA_INFO } from '@petter-eikeland/sfprofiles/lib/impl/metadata/metadataInfo';
 import * as path from 'path';
-import ProfileReconcile from '@flxbl-io/sfprofiles/lib/impl/source/profileReconcile';
-import MetadataFiles from '@flxbl-io/sfprofiles/lib/impl/metadata/metadataFiles';
+import ProfileReconcile from '@petter-eikeland/sfprofiles/lib/impl/source/profileReconcile';
+import MetadataFiles from '@petter-eikeland/sfprofiles/lib/impl/metadata/metadataFiles';
 import SfpCommand from '../../SfpCommand';
 const Table = require('cli-table');
 import { ZERO_BORDER_TABLE } from '../../ui/TableConstants';
