@@ -1,9 +1,9 @@
 import { Messages, Org }  from '@salesforce/core';
 import { isNil } from 'lodash';
-import { Sfpowerkit } from '@flxbl-io/sfprofiles/lib/utils/sfpowerkit';
+import { Sfpowerkit } from '@petter-eikeland/sfprofiles/lib/utils/sfpowerkit';
 import SFPLogger, { LoggerLevel } from '@flxbl-io/sfp-logger';
-import ProfileRetriever from '@flxbl-io/sfprofiles/lib/impl/metadata/retriever/profileRetriever';
-import ProfileMerge from '@flxbl-io/sfprofiles/lib/impl/source/profileMerge';
+import ProfileRetriever from '@petter-eikeland/sfprofiles/lib/impl/metadata/retriever/profileRetriever';
+import ProfileMerge from '@petter-eikeland/sfprofiles/lib/impl/source/profileMerge';
 import SfpCommand from '../../SfpCommand';
 import Table from 'cli-table';
 import { ZERO_BORDER_TABLE } from '../../ui/TableConstants';
