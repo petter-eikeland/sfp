@@ -30,3 +30,4 @@ packages/apexlink/tests/resources/feature-mgmt/apexlink.json
 
 #Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+/.claude/worktrees
