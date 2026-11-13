@@ -1,11 +1,11 @@
 import {
-    ApexParserListener,
+    ApexParserBaseListener,
     AnnotationContext,
     InterfaceDeclarationContext,
     ClassDeclarationContext,
 } from '@apexdevtools/apex-parser';
 
-export default class ApexTypeListener implements ApexParserListener {
+export default class ApexTypeListener extends ApexParserBaseListener {
     private apexType: ApexType = {
         class: false,
         testClass: false,
@@ -13,7 +13,7 @@ export default class ApexTypeListener implements ApexParserListener {
     };
 
     enterAnnotation(ctx: AnnotationContext): void {
-        if (ctx.text.toUpperCase().startsWith('@ISTEST')) {
+        if (ctx.getText().toUpperCase().startsWith('@ISTEST')) {
             this.apexType.testClass= true;
         }
     }
